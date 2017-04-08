@@ -30,6 +30,8 @@ GetWebResultAsync("https://raw.githubusercontent.com/allwillburn/Darius/master/D
 GetLevelPoints = function(unit) return GetLevel(unit) - (GetCastLevel(unit,0)+GetCastLevel(unit,1)+GetCastLevel(unit,2)+GetCastLevel(unit,3)) end
 local SetDCP, SkinChanger = 0
 
+local DariusE = { delay = 0.25, speed = math.huge, width = 300, range = 450, angle = 35 }
+
 local DariusMenu = Menu("Darius", "Darius")
 
 DariusMenu:SubMenu("Combo", "Combo")
@@ -38,6 +40,7 @@ DariusMenu.Combo:Boolean("Q", "Use Q in combo", true)
 DariusMenu.Combo:Boolean("AA", "Use AA in combo", true)
 DariusMenu.Combo:Boolean("W", "Use W in combo", true)
 DariusMenu.Combo:Boolean("E", "Use E in combo", true)
+DariusMenu.Combo:Slider("Epred", "E Hit Chance", 3,0,10,1)
 DariusMenu.Combo:Boolean("R", "Use R in combo", true)
 DariusMenu.Combo:Slider("RX", "X Enemies to Cast R",3,1,5,1)
 DariusMenu.Combo:Boolean("Cutlass", "Use Cutlass", true)
@@ -72,6 +75,7 @@ DariusMenu.Harass:Boolean("W", "Use W", true)
 DariusMenu:SubMenu("KillSteal", "KillSteal")
 DariusMenu.KillSteal:Boolean("Q", "KS w Q", true)
 DariusMenu.KillSteal:Boolean("E", "KS w E", true)
+DariusMenu.KillSteal:Boolean("R", "KS w R]=", true)
 
 DariusMenu:SubMenu("AutoIgnite", "AutoIgnite")
 DariusMenu.AutoIgnite:Boolean("Ignite", "Ignite if killable", true)
@@ -158,14 +162,13 @@ end)
 			 CastTargetSpell(target, Cutlass)
             end
 
-            local target = GetCurrentTarget()
-            if ValidTarget(target, 540) and DariusMenu.Combo.E:Value() and not IsInDistance(target, GetRange(myHero)+GetHitBox(myHero)+GetHitBox(target)) and Ready(_E) then
-            local Apprehend = { delay = 0.25, speed = math.huge, width = 300, range = 540, angle = 35 }
-            local pI = GetConicAOEPrediction(target, Apprehend)
-              if pI and pI.hitChance >= 0.25 then
-                 CastSkillShot(_E, pI.castPos)
-                 end
-               end
+            if DariusMenu.Combo.Q:Value() and Ready(_Q) and ValidTarget(target, 450) then
+                local EPred = GetPrediction(target,DariusE)
+                       if EPred.hitChance > (DariusMenu.Combo.Qpred:Value() * 0.1) then
+                                 CastSkillShot(_E,EPred.castPos)
+                       end
+           end
+              
 
             if DariusMenu.Combo.AA:Value() and ValidTarget(target, 175) then
                          AttackUnit(target)
@@ -261,7 +264,7 @@ end)
       local realHP = (GetCurrentHP(enemy) + GetDmgShield(enemy) + (GetHPRegen(enemy) * 0.25))
       local rStacks = rDebuff[enemy.networkID] or 0
       local rDamage = (((GetSpellData(myHero, _R).level * 100) + (GetBonusDmg(myHero) * 0.75)) + (rStacks * ((GetSpellData(myHero, _R).level * 20) + (GetBonusDmg(myHero) * 0.15))))
-      if ValidTarget(enemy, 460) and rDamage >= realHP and Ready(_R) and DariusMenu.ksteal.R:Value() then 
+      if ValidTarget(enemy, 460) and rDamage >= realHP and Ready(_R) and DariusMenu.Killsteal.R:Value() then 
         CastTargetSpell(enemy, _R)
       end
 end
