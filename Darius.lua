@@ -330,7 +330,7 @@ end
 			CastSpell(Summoner_2)
 		end
 	end
-    end	
+    
   end		
 			
 end)
