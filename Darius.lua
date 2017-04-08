@@ -330,7 +330,10 @@ end
 			CastSpell(Summoner_2)
 		end
 	end
+    end			
+			
 end)
+	
 
 OnDraw(function (myHero)
         
