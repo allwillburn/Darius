@@ -1,4 +1,4 @@
-local ver = "0.01"
+local ver = "0.12"
 
 
 if FileExist(COMMON_PATH.."MixLib.lua") then
@@ -94,9 +94,26 @@ OnTick(function (myHero)
         local Cutlass = GetItemSlot(myHero, 3144)
         local Randuins = GetItemSlot(myHero, 3143)
         local THydra = GetItemSlot(myHero, 3748)
-        local rDebuff        = {}
-        local aaCD           = false
-        local qCasting = false
+
+
+OnUpdateBuff (function(unit, buff)
+  if not unit or not buff then
+    return
+  end
+  if buff.Name:lower() == "dariushemo" and GetTeam(buff) ~= (GetTeam(myHero)) and myHero.type == unit.type then
+        rDebuff[unit.networkID] = buff.Count
+    end
+end)
+
+OnRemoveBuff (function(unit, buff)
+  if not unit or not buff then
+    return
+  end
+  if buff.Name:lower() == "dariushemo" and GetTeam(buff) ~= (GetTeam(myHero)) and myHero.type == unit.type then
+        rDebuff[unit.networkID] = 0
+    end
+end)
+
 
 	--AUTO LEVEL UP
 	if DariusMenu.AutoMode.Level:Value() then
@@ -187,7 +204,7 @@ OnTick(function (myHero)
 			CastSpell(RHydra)
             end
 
-            if RivenMenu.Combo.THydra:Value() and THydra > 0 and Ready(THydra) and ValidTarget(target, 400) then
+            if DariusMenu.Combo.THydra:Value() and THydra > 0 and Ready(THydra) and ValidTarget(target, 400) then
 			CastSpell(THydra)
             end	
 
@@ -312,7 +329,6 @@ end
 		elseif GetCastName(myHero, SUMMONER_2) == "SummonerHaste" and Ready(SUMMONER_2) then
 			CastSpell(Summoner_2)
 		end
-	  end
 	end
 end)
 
@@ -322,50 +338,14 @@ OnDraw(function (myHero)
 		DrawCircle(GetOrigin(myHero), 425, 0, 200, GoS.Red)
 	end
 
-        if DariusMenu.Drawings.rhpdraw:Value()  then 
-      for _, enemy in pairs(GetEnemyHeroes()) do
-        local realHP = (GetCurrentHP(enemy) + GetDmgShield(enemy) + (GetHPRegen(enemy) * 0.25))
-        local barPos = GetHPBarPos(enemy)
-        local rStacks = rDebuff[enemy.networkID] or 0
-        local rDamage = (((GetSpellData(myHero, _R).level * 100) + (GetBonusDmg(myHero) * 0.75)) + (rStacks * ((GetSpellData(myHero, _R).level * 20) + (GetBonusDmg(myHero) * 0.15)))) 
-        if rDebuff[enemy.networkID] ~= nil and ValidTarget(enemy, 2000) then
-          if rDebuff[enemy.networkID] == 0 then
-            DrawTextA(""..rDebuff[enemy.networkID].."", 40, barPos.x+135, barPos.y-17, ARGB(255, 0, 255, 0))
-          elseif rDebuff[enemy.networkID] == 1 then
-            DrawTextA(""..rDebuff[enemy.networkID].."", 40, barPos.x+135, barPos.y-17, ARGB(255, 173, 255, 47))
-          elseif rDebuff[enemy.networkID] == 2 then
-            DrawTextA(""..rDebuff[enemy.networkID].."", 40, barPos.x+135, barPos.y-17, ARGB(255, 255, 255, 0))
-          elseif rDebuff[enemy.networkID] == 3 then
-            DrawTextA(""..rDebuff[enemy.networkID].."", 40, barPos.x+135, barPos.y-17, ARGB(255, 255, 165, 0))
-          elseif rDebuff[enemy.networkID] == 4 then
-            DrawTextA(""..rDebuff[enemy.networkID].."", 40, barPos.x+135, barPos.y-17, ARGB(255, 139, 69, 0))
-          elseif rDebuff[enemy.networkID] == 5 and realHP > rDamage then
-            DrawTextA("Max Stacks", 40, barPos.x+135, barPos.y-17, ARGB(255, 255, 0, 0))
-          elseif realHP <= rDamage and Ready(_R) then
-            DrawTextA("Finish Him!!!", 40, barPos.x+135, barPos.y-17, ARGB(255, 255, 0, 0))
-          end
-        end
-      end 
-      for _, enemy in pairs(GetEnemyHeroes()) do
-      local realHP = (GetCurrentHP(enemy) + GetDmgShield(enemy) + (GetHPRegen(enemy) * 0.25))
-      local rStacks = rDebuff[enemy.networkID] or 0
-      local rDamage = (((GetSpellData(myHero, _R).level * 100) + (GetBonusDmg(myHero) * 0.75)) + (rStacks * ((GetSpellData(myHero, _R).level * 20) + (GetBonusDmg(myHero) * 0.15)))) 
-      if myHero:GetSpellData(_R).currentCd == 0 and myHero:GetSpellData(_R).level ~= 0 and DariusMenu.Drawings.rhpdraw:Value() and ValidTarget(enemy, 2000) then
-        DrawDmgOverHpBar(enemy, realHP, rDamage, 0, ARGB(255, 0, 255, 0))
-      end
-    end
-  end
-
+       
 
 end)
 
 
 OnProcessSpell(function(unit, spell)
 	local target = GetCurrentTarget()        
-       
-        if unit.isMe and spell.name:lower():find("Dariusempowertwo") then 
-		Mix:ResetAA()	
-	end        
+             
 
         if unit.isMe and spell.name:lower():find("itemtiamatcleave") then
 		Mix:ResetAA()
