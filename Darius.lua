@@ -76,7 +76,7 @@ DariusMenu:SubMenu("KillSteal", "KillSteal")
 DariusMenu.KillSteal:Boolean("Q", "KS w Q", true)
 DariusMenu.KillSteal:Boolean("E", "KS w E", true)
 DariusMenu.KillSteal:Boolean("R", "KS w R", true)
-DariusMenu.KillSteal:Boolean("R2", "KS w R2", true)
+
 
 DariusMenu:SubMenu("AutoIgnite", "AutoIgnite")
 DariusMenu.AutoIgnite:Boolean("Ignite", "Ignite if killable", true)
@@ -99,28 +99,9 @@ OnTick(function (myHero)
         local Cutlass = GetItemSlot(myHero, 3144)
         local Randuins = GetItemSlot(myHero, 3143)
         local THydra = GetItemSlot(myHero, 3748)
-	local rDebuff        = {}
-        local aaCD           = false
-        local qCasting = false
+	
 
 
-OnUpdateBuff (function(unit, buff)
-  if not unit or not buff then
-    return
-  end
-  if buff.Name:lower() == "dariushemo" and GetTeam(buff) ~= (GetTeam(myHero)) and myHero.type == unit.type then
-        rDebuff[unit.networkID] = buff.Count
-    end
-end)
-
-OnRemoveBuff (function(unit, buff)
-  if not unit or not buff then
-    return
-  end
-  if buff.Name:lower() == "dariushemo" and GetTeam(buff) ~= (GetTeam(myHero)) and myHero.type == unit.type then
-        rDebuff[unit.networkID] = 0
-    end
-end)
 
 
 	--AUTO LEVEL UP
@@ -267,13 +248,7 @@ end)
                 end
 	
 
-                if rDebuff ~= nil then 
-      local realHP = (GetCurrentHP(enemy) + GetDmgShield(enemy) + (GetHPRegen(enemy) * 0.25))
-      local rStacks = rDebuff[enemy.networkID] or 0
-      local rDamage = (((GetSpellData(myHero, _R).level * 100) + (GetBonusDmg(myHero) * 0.75)) + (rStacks * ((GetSpellData(myHero, _R).level * 20) + (GetBonusDmg(myHero) * 0.15))))
-      if ValidTarget(enemy, 460) and rDamage >= realHP and Ready(_R) and DariusMenu.KillSteal.R2:Value() then 
-        CastTargetSpell(enemy, _R)
-      end
+               
 end
       
 
