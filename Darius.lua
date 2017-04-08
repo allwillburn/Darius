@@ -1,4 +1,4 @@
-local ver = "0.05"
+local ver = "0.06"
 
 
 if FileExist(COMMON_PATH.."MixLib.lua") then
@@ -242,7 +242,7 @@ OnTick(function (myHero)
   
                 end
 			
-		if IsReady(_R) and ValidTarget(enemy, 460) and DariusMenu.KillSteal.R:Value() and GetHP(enemy) < getdmg("R + 200",enemy) then
+		if IsReady(_R) and ValidTarget(enemy, 460) and DariusMenu.KillSteal.R:Value() and GetHP(enemy) < getdmg("R",enemy) then
 		                      CastTargetSpell(target, _R)
   
                 end
