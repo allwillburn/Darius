@@ -202,7 +202,7 @@ OnTick(function (myHero)
 	    
 	    
             if DariusMenu.Combo.R:Value() and Ready(_R) and ValidTarget(target, 460) and (EnemiesAround(myHeroPos(), 460) >= DariusMenu.Combo.RX:Value()) then
-			CastTargetSpell(enemy, _R)
+			CastTargetSpell(target, _R)
             end
 
           end
@@ -242,7 +242,7 @@ OnTick(function (myHero)
   
                 end
 			
-		if IsReady(_R) and ValidTarget(enemy, 460) and DariusMenu.KillSteal.R:Value() and GetHP(enemy) < getdmg("R",enemy) then
+		if IsReady(_R) and ValidTarget(enemy, 460) and DariusMenu.KillSteal.R:Value() and GetHP(enemy) < getdmg("R + 200",enemy) then
 		                      CastTargetSpell(target, _R)
   
                 end
