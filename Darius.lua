@@ -94,6 +94,9 @@ OnTick(function (myHero)
         local Cutlass = GetItemSlot(myHero, 3144)
         local Randuins = GetItemSlot(myHero, 3143)
         local THydra = GetItemSlot(myHero, 3748)
+        local rDebuff        = {}
+        local aaCD           = false
+        local qCasting = false
 
 	--AUTO LEVEL UP
 	if DariusMenu.AutoMode.Level:Value() then
