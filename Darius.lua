@@ -76,6 +76,7 @@ DariusMenu:SubMenu("KillSteal", "KillSteal")
 DariusMenu.KillSteal:Boolean("Q", "KS w Q", true)
 DariusMenu.KillSteal:Boolean("E", "KS w E", true)
 DariusMenu.KillSteal:Boolean("R", "KS w R", true)
+DariusMenu.KillSteal:Boolean("R2", "KS w R2", true)
 
 DariusMenu:SubMenu("AutoIgnite", "AutoIgnite")
 DariusMenu.AutoIgnite:Boolean("Ignite", "Ignite if killable", true)
@@ -259,12 +260,18 @@ end)
 		                      CastSkillShot(_E, target)
   
                 end
+			
+		if IsReady(_R) and ValidTarget(enemy, 460) and DariusMenu.KillSteal.R:Value() and GetHP(enemy) < getdmg("R",enemy) then
+		                      CastTargetSpell(target, _R)
+  
+                end
+	
 
                 if rDebuff ~= nil then 
       local realHP = (GetCurrentHP(enemy) + GetDmgShield(enemy) + (GetHPRegen(enemy) * 0.25))
       local rStacks = rDebuff[enemy.networkID] or 0
       local rDamage = (((GetSpellData(myHero, _R).level * 100) + (GetBonusDmg(myHero) * 0.75)) + (rStacks * ((GetSpellData(myHero, _R).level * 20) + (GetBonusDmg(myHero) * 0.15))))
-      if ValidTarget(enemy, 460) and rDamage >= realHP and Ready(_R) and DariusMenu.KillSteal.R:Value() then 
+      if ValidTarget(enemy, 460) and rDamage >= realHP and Ready(_R) and DariusMenu.KillSteal.R2:Value() then 
         CastTargetSpell(enemy, _R)
       end
 end
