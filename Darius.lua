@@ -264,7 +264,7 @@ end)
       local realHP = (GetCurrentHP(enemy) + GetDmgShield(enemy) + (GetHPRegen(enemy) * 0.25))
       local rStacks = rDebuff[enemy.networkID] or 0
       local rDamage = (((GetSpellData(myHero, _R).level * 100) + (GetBonusDmg(myHero) * 0.75)) + (rStacks * ((GetSpellData(myHero, _R).level * 20) + (GetBonusDmg(myHero) * 0.15))))
-      if ValidTarget(enemy, 460) and rDamage >= realHP and Ready(_R) and DariusMenu.Killsteal.R:Value() then 
+      if ValidTarget(enemy, 460) and rDamage >= realHP and Ready(_R) and DariusMenu.KillSteal.R:Value() then 
         CastTargetSpell(enemy, _R)
       end
 end
