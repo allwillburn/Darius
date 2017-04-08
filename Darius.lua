@@ -75,7 +75,7 @@ DariusMenu.Harass:Boolean("W", "Use W", true)
 DariusMenu:SubMenu("KillSteal", "KillSteal")
 DariusMenu.KillSteal:Boolean("Q", "KS w Q", true)
 DariusMenu.KillSteal:Boolean("E", "KS w E", true)
-DariusMenu.KillSteal:Boolean("R", "KS w R]=", true)
+DariusMenu.KillSteal:Boolean("R", "KS w R", true)
 
 DariusMenu:SubMenu("AutoIgnite", "AutoIgnite")
 DariusMenu.AutoIgnite:Boolean("Ignite", "Ignite if killable", true)
@@ -281,7 +281,7 @@ end
 	        end
 
                 if DariusMenu.LaneClear.E:Value() and Ready(_E) and ValidTarget(closeminion, 450) then
-	        	CastSpell(_E)
+	        	CastSkillShot(_E, closeminion)
 	        end
 
                 if DariusMenu.LaneClear.Tiamat:Value() and ValidTarget(closeminion, 350) then
