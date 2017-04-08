@@ -11,7 +11,7 @@ end
 
 if GetObjectName(GetMyHero()) ~= "Darius" then return end
 
-
+require("OpenPredict")
 require("DamageLib")
 
 function AutoUpdate(data)
