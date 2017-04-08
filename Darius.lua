@@ -164,7 +164,7 @@ end)
 
             if DariusMenu.Combo.Q:Value() and Ready(_Q) and ValidTarget(target, 450) then
                 local EPred = GetPrediction(target,DariusE)
-                       if EPred.hitChance > (DariusMenu.Combo.Qpred:Value() * 0.1) then
+                       if EPred.hitChance > (DariusMenu.Combo.Epred:Value() * 0.1) then
                                  CastSkillShot(_E,EPred.castPos)
                        end
            end
